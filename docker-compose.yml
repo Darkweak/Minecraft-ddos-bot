@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  server:
+    image: itzg/minecraft-server
+    environment:
+      - EULA=true
+      - VERSION=1.12.2
+      - ONLINE_MODE=FALSE
+      - TYPE=FORGE
+      - FORGE_INSTALLER=minecraft_server.jar
+    volumes:
+      - ./server:/data
+    ports:
+      - 25565:25565
+  node:
+    image: "node:15"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - SERVER_URL=${SERVER_URL}
+      - SERVER_PORT=${SERVER_PORT}
+      - INSTANCES_PER_RUNNER=${INSTANCES_PER_RUNNER}
+    volumes:
+      - ./:/home/node/app
+    command: "node index.js"
